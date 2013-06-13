@@ -2,6 +2,7 @@ package com.erkin.lupusvitae.model;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.erkin.lupusvitae.utils.*;
 
 public class HexWorld {
@@ -9,7 +10,9 @@ public class HexWorld {
 	// Hexes
 	private int[][]	groundHexes;
 	private ArrayList<Hex> loadedHexes = new ArrayList<Hex>();
-	//private Hex[][]	livingHexes;
+	//private ArrayList<Hex>	livingHexes;
+	//private ArrayList<Hex>	itemHexes; // Food at ground, etc
+
 	public ArrayList<Hex> getLoadedHexes()
 	{
 		return loadedHexes;		
@@ -97,18 +100,21 @@ public class HexWorld {
 		this.height = rows * hexHeight;
 	}
 	
+	// Generate ground base
 	public void tempGroundGeneration()
 	{
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				groundHexes[col][row] = HexGroundType.type.PLAIN.ordinal();
+				groundHexes[col][row] = HexGroundType.type.WATER.ordinal();
 			}
 		}
 	}
 	
+	// Generate loaded hex
 	public void generateLoadHexes(int minCol, int maxCol, int minRow, int maxRow)
 	{
 		this.loadedHexes.clear();
+		
 		// Hex Params
 		final float h = HexMath.getH(side, HexOrientation.POINT);
 		final float r = HexMath.getR(side, HexOrientation.POINT);
@@ -116,12 +122,13 @@ public class HexWorld {
 		// New tiles
 		for (int col = minCol; col <= maxCol; col++) {
 			for (int row = minRow; row <= maxRow; row++) {
-				if (row > 0 && row < getRows() && col > 0 && col < getCols())
+				if (row >= 0 && row <= getRows() && col >= 0 && col <= getCols())
 					createLoadedHex(col,row,r,h);
 			}
 		}
 	}
 	
+	// Create one loaded hex
 	public void createLoadedHex(int col, int row, float r, float h)
 	{
 		// Calcul pixel position

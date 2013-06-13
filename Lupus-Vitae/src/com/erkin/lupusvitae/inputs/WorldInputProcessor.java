@@ -1,23 +1,29 @@
 package com.erkin.lupusvitae.inputs;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.erkin.lupusvitae.model.HexWorld;
 
 public class WorldInputProcessor implements InputProcessor {
 	private OrthographicCamera cam;
 	private float dragOldX;
 	private float dragOldY;
+	private HexWorld world;
 
-	public WorldInputProcessor(OrthographicCamera camParam)
+	public WorldInputProcessor(OrthographicCamera camParam, HexWorld worldParam)
 	{
-		dragOldX = -999999;
-		dragOldY = -999999;
-		this.cam = camParam;
+		dragOldX 	= -999999;
+		dragOldY 	= -999999;
+		this.cam 	= camParam;
+		this.world	= worldParam;
 	}
+	
 	@Override
 	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
+
+        return false;
 	}
 
 	@Override
@@ -90,6 +96,34 @@ public class WorldInputProcessor implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	// Pooling
+	public void poolingKeyboard() {
+		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
+			if(cam.zoom < 1000)
+				cam.zoom += 0.5;        
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.Q)) {
+			if(cam.zoom > 0.5)
+				cam.zoom -= 0.5;
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+		        if (cam.position.x > 0 - 5)
+		        	cam.translate(-1, 0, 0);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+		        if (cam.position.x <  world.getWidth() + 5)
+		        	cam.translate(1, 0, 0);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+		        if (cam.position.y >  0 - 5)
+		        	cam.translate(0, -1, 0);
+		}
+		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+		        if (cam.position.y <  world.getHeight() + 5)
+		        	cam.translate(0, 1, 0);
+		}
 	}
 
 }
