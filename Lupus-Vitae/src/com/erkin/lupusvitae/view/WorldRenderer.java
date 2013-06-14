@@ -27,13 +27,8 @@ public class WorldRenderer {
     static final int VIEWPORT_HEIGHT_UNITS = 10;
     
     // Rander objects
-    private TextureRegion hexTextureEven = new TextureRegion();
-    private TextureRegion hexTextureOdd = new TextureRegion();
+    private TextureRegion hexTexture = new TextureRegion();
     private SpriteBatch spriteBatch;
-	float colCalcul;
-	float rowCalcul;
-	float h;
-	float r;
 	int sprite_margin;
 	int previousMinCol = -1;
 	int previousMaxCol = -1;
@@ -49,14 +44,8 @@ public class WorldRenderer {
 
 		// Load images
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/textures/textures.pack"));
-        hexTextureEven = atlas.findRegion("hex_even");
-        hexTextureOdd  = atlas.findRegion("hex_odd");
+        hexTexture = atlas.findRegion("hex256");
 
-        // Values to draw
-		h = HexMath.getH(world.getSide(), HexOrientation.POINT);
-		r = HexMath.getR(world.getSide(), HexOrientation.POINT);
-        colCalcul = 2 * r;
-        rowCalcul = h + world.getSide();	
 		sprite_margin = 4; // Used to pre-render sprite after bounds
 	}
 	
@@ -76,10 +65,10 @@ public class WorldRenderer {
 			float max_pixel_y = (worldCam.position.y + ((worldCam.viewportHeight * worldCam.zoom) / 2) + sprite_margin) ;
 			
 			// Cam position in col/row
-			int min_col = (int) (min_pixel_x / colCalcul);
-			int max_col = (int) (max_pixel_x / colCalcul);
-			int min_row = (int) (min_pixel_y / rowCalcul);
-			int max_row = (int) (max_pixel_y / rowCalcul);
+			int min_col = (int) (min_pixel_x / world.colCalcul);
+			int max_col = (int) (max_pixel_x / world.colCalcul);
+			int min_row = (int) (min_pixel_y / world.rowCalcul);
+			int max_row = (int) (max_pixel_y / world.rowCalcul);
 			
 			// Load hexes
 			updateLoadedHex(min_col,max_col,min_row,max_row);
@@ -91,7 +80,7 @@ public class WorldRenderer {
 			spriteBatch.end();
 			
 			// Update
-			fpsLogger.log();
+			//fpsLogger.log();
 			worldCam.update();
 	 }
 	 
@@ -120,14 +109,7 @@ public class WorldRenderer {
 	 // Render one hex
 	 public void renderHex(Hex hex)
 	 {
-			if (hex.getRowIndice() % 2 == 0)
-			{
-				spriteBatch.draw(hexTextureEven, hex.getPositionX(), hex.getPositionY(), world.getHexWidth(), world.getHexHeight());
-			}
-			else
-			{
-				spriteBatch.draw(hexTextureOdd, hex.getPositionX(), hex.getPositionY(), world.getHexWidth(), world.getHexHeight());
-			}
+			spriteBatch.draw(hexTexture, hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
 	 }
 	 
 	 

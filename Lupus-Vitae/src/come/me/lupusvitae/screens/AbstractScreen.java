@@ -16,7 +16,7 @@ public class AbstractScreen implements Screen {
 	@Override
 	public void render(float delta) {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+		Gdx.gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 		
 	};
 

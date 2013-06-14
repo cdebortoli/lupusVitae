@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.erkin.lupusvitae.model.HexWorld;
 
 public class WorldInputProcessor implements InputProcessor {
@@ -11,13 +12,14 @@ public class WorldInputProcessor implements InputProcessor {
 	private float dragOldX;
 	private float dragOldY;
 	private HexWorld world;
-
+	private Vector3 touchPos;
 	public WorldInputProcessor(OrthographicCamera camParam, HexWorld worldParam)
 	{
 		dragOldX 	= -999999;
 		dragOldY 	= -999999;
 		this.cam 	= camParam;
 		this.world	= worldParam;
+		touchPos = new Vector3();
 	}
 	
 	@Override
@@ -40,8 +42,29 @@ public class WorldInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
+
+		cam.unproject(touchPos.set(screenX, screenY, 0));
+		
+	    float sectX = touchPos.x  / world.colCalcul;
+	    float sectY = touchPos.y / world.rowCalcul;
+	    float sectPixelX = touchPos.x  % world.colCalcul;
+	    float sectPixelY = touchPos.y % world.rowCalcul;
+	    
+	    if (sectY % 2 >= 1)
+	    {
+	    	Gdx.app.log("a","A");
+	    }
+	    else
+	    	
+	    {
+	    	Gdx.app.log("b","b");
+	    }
+		
+//If (SectY AND 1 = 0) then SectTyp := A else SectTyp := B;
+		
+		
+		
+		return true;
 	}
 
 	@Override
@@ -113,7 +136,7 @@ public class WorldInputProcessor implements InputProcessor {
 		        	cam.translate(-1, 0, 0);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-		        if (cam.position.x <  world.getWidth() + 5)
+		        if (cam.position.x <  world.width + 5)
 		        	cam.translate(1, 0, 0);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
@@ -121,7 +144,7 @@ public class WorldInputProcessor implements InputProcessor {
 		        	cam.translate(0, -1, 0);
 		}
 		if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-		        if (cam.position.y <  world.getHeight() + 5)
+		        if (cam.position.y <  world.height + 5)
 		        	cam.translate(0, 1, 0);
 		}
 	}

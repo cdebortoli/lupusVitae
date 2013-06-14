@@ -38,50 +38,23 @@ public class HexWorld {
 	}
 	
 	// Map width
-	private	float width;
-	public float getWidth()
-	{
-		return width;
-	}
+	public	float width;
 	
 	// Height Map
-	private	float height;
-	public float getHeight()
-	{
-		return height;
-	}
+	public	float height;
 
 	// Hexes indices
-	private int rows;
-	public float getRows()
-	{
-		return rows;
-	}
-	
-	private int cols;
-	public float getCols()
-	{
-		return cols;
-	}
+	public int rows;
+	public int cols;
 
 	// Hex sizes
-	private float side;
-	public float getSide()
-	{
-		return side;
-	}
-	
-	private float hexWidth;
-	public float getHexWidth()
-	{
-		return hexWidth;
-	}
-	
-	private float hexHeight;
-	public float getHexHeight()
-	{
-		return hexHeight;
-	}
+	public float side;
+	public float hexWidth;
+	public float hexHeight;
+	public float colCalcul;
+	public float rowCalcul;
+	public float h;
+	public float r;
 	
 	// Init
 	public HexWorld(int worldRows, int worldCols, float hexSide)
@@ -98,6 +71,12 @@ public class HexWorld {
 		this.hexHeight = HexMath.getHeight(side, HexOrientation.POINT);
 		this.width = (cols * hexWidth) + hexWidth;
 		this.height = rows * hexHeight;
+		
+        // Values to draw
+		this.h = HexMath.getH(this.side, HexOrientation.POINT);
+		this.r = HexMath.getR(this.side, HexOrientation.POINT);
+        this.colCalcul = 2 * this.r;
+        this.rowCalcul = this.h + this.side;	
 	}
 	
 	// Generate ground base
@@ -115,14 +94,10 @@ public class HexWorld {
 	{
 		this.loadedHexes.clear();
 		
-		// Hex Params
-		final float h = HexMath.getH(side, HexOrientation.POINT);
-		final float r = HexMath.getR(side, HexOrientation.POINT);
-		
 		// New tiles
 		for (int col = minCol; col <= maxCol; col++) {
 			for (int row = minRow; row <= maxRow; row++) {
-				if (row >= 0 && row <= getRows() && col >= 0 && col <= getCols())
+				if (row >= 0 && row <= rows && col >= 0 && col <= cols)
 					createLoadedHex(col,row,r,h);
 			}
 		}
