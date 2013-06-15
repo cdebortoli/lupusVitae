@@ -44,27 +44,86 @@ public class WorldInputProcessor implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
 		cam.unproject(touchPos.set(screenX, screenY, 0));
-		
-	    float sectX = touchPos.x  / world.colCalcul;
-	    float sectY = touchPos.y / world.rowCalcul;
-	    float sectPixelX = touchPos.x  % world.colCalcul;
-	    float sectPixelY = touchPos.y % world.rowCalcul;
+		//http://www.gamedev.net/page/resources/_/technical/game-programming/coordinates-in-hexagon-based-tile-maps-r1800
 	    
-	    if (sectY % 2 >= 1)
-	    {
-	    	Gdx.app.log("a","A");
-	    }
-	    else
-	    	
-	    {
-	    	Gdx.app.log("b","b");
-	    }
+		// Section coor
+		float sectX = (int)Math.floor(touchPos.x  / world.colCalcul);
+	    float sectY = (int)Math.floor(touchPos.y / world.rowCalcul);
+
+	    // Pixel coor in sections
+		float sectPixelX = touchPos.x  % world.colCalcul;
+		float sectPixelY = touchPos.y % world.rowCalcul;
+
+		// Final coor
+		int arrayY = 0;
+		int arrayX = 0;
+
+		// Used to calculate angle
+		float m = world.h / world.r;
 		
-//If (SectY AND 1 = 0) then SectTyp := A else SectTyp := B;
-		
-		
-		
-		return true;
+		// Even line : Type A
+		if (sectY % 2 < 1)
+		{
+			Gdx.app.log("Type ", "A");
+
+			 // Middle
+			 arrayY = (int)sectY;
+			 arrayX = (int)sectX;
+			 
+			 // Left
+			 if (sectPixelY < (world.h - sectPixelX * m))
+			 {
+				 arrayY = (int)sectY - 1;
+				 arrayX = (int)sectX - 1; 
+			 }
+			 // Right
+			 else if (sectPixelY < (-world.h + sectPixelX * m))
+			 {
+				 arrayY = (int)sectY - 1;
+				 arrayX = (int)sectX; 
+			 }
+		}
+		// Odd line : Type B
+		else
+		{
+			Gdx.app.log("Type", "B");
+
+			 // Right of intersection
+			 if (sectPixelX >= world.r)
+			 {
+				 // Hex under (y)
+				 if (sectPixelY < (2 * world.h - sectPixelX * m))
+				 {
+					 arrayY = (int)sectY - 1;
+					 arrayX = (int)sectX; 
+				 }
+				 else
+				 {
+					 arrayY = (int)sectY;
+					 arrayX = (int)sectX; 
+				 }
+			 }
+			 // Left of intersection
+			 if (sectPixelX < world.r)
+			 {
+				 // Hex under (y)
+				 if (sectPixelY < sectPixelX * m)
+				 {
+					 arrayY = (int)sectY - 1;
+					 arrayX = (int)sectX; 
+				 }
+				 else
+				 {
+					 arrayY = (int)sectY;
+					 arrayX = (int)sectX - 1; 
+				 }
+			 }
+		}
+
+	 Gdx.app.log("ArrayX =", String.valueOf(arrayX));
+	 Gdx.app.log("ArrayY =", String.valueOf(arrayY));
+
+	return true;
 	}
 
 	@Override
@@ -76,35 +135,35 @@ public class WorldInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
 		
-		// Drag left
-		if (screenX < dragOldX)
-		{
-            if (cam.position.x > 0 - 5)
-            	cam.translate(-1, 0, 0);
-		}
-		// Drag right
-		else if(screenX > dragOldX)
-		{
-			cam.translate(1, 0, 0);
-		}
-		// Drag up
-		if (screenY < dragOldY)
-		{
-
-			cam.translate(0, 1, 0);
-		}
-		// Drag down
-		else if(screenY > dragOldY)
-		{
-
-            if (cam.position.y >  0 - 5)
-            	cam.translate(0, -1, 0);
-		}
-		if (dragOldX == -999999)
-		{
-			dragOldX = screenX;
-			dragOldY = screenY;
-		}
+//		// Drag left
+//		if (screenX < dragOldX)
+//		{
+//            if (cam.position.x > 0 - 5)
+//            	cam.translate(-1, 0, 0);
+//		}
+//		// Drag right
+//		else if(screenX > dragOldX)
+//		{
+//			cam.translate(1, 0, 0);
+//		}
+//		// Drag up
+//		if (screenY < dragOldY)
+//		{
+//
+//			cam.translate(0, 1, 0);
+//		}
+//		// Drag down
+//		else if(screenY > dragOldY)
+//		{
+//
+//            if (cam.position.y >  0 - 5)
+//            	cam.translate(0, -1, 0);
+//		}
+//		if (dragOldX == -999999)
+//		{
+//			dragOldX = screenX;
+//			dragOldY = screenY;
+//		}
 		
 		return false;
 	}
