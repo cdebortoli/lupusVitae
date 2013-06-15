@@ -10,7 +10,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.erkin.lupusvitae.inputs.WorldInputProcessor;
 import com.erkin.lupusvitae.model.Hex;
+import com.erkin.lupusvitae.model.HexGroundType;
 import com.erkin.lupusvitae.model.HexWorld;
+import com.erkin.lupusvitae.utils.Assets;
 import com.erkin.lupusvitae.utils.HexMath;
 import com.erkin.lupusvitae.utils.HexOrientation;
 
@@ -20,6 +22,7 @@ public class WorldRenderer {
 	private HexWorld world;
 	private FPSLogger fpsLogger = new FPSLogger();
 	private WorldInputProcessor inputProcessor;
+	private Assets assets;
 	
 	// Cam values
     float rotationSpeed = 0.5f;
@@ -27,7 +30,6 @@ public class WorldRenderer {
     static final int VIEWPORT_HEIGHT_UNITS = 10;
     
     // Rander objects
-    private TextureRegion hexTexture = new TextureRegion();
     private SpriteBatch spriteBatch;
 	int sprite_margin;
 	int previousMinCol = -1;
@@ -43,8 +45,8 @@ public class WorldRenderer {
         spriteBatch = new SpriteBatch();
 
 		// Load images
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/textures/textures.pack"));
-        hexTexture = atlas.findRegion("hex256");
+        assets = new Assets();
+        assets.load();
 
 		sprite_margin = 4; // Used to pre-render sprite after bounds
 	}
@@ -109,7 +111,12 @@ public class WorldRenderer {
 	 // Render one hex
 	 public void renderHex(Hex hex)
 	 {
-			spriteBatch.draw(hexTexture, hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
+		if ((world.selectedHex != null) && (world.selectedHex.x == hex.getColumnIndice()) && (world.selectedHex.y == hex.getRowIndice()))
+		{
+			spriteBatch.draw(assets.getSelectedHexTexture(), hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
+		}
+		else
+			spriteBatch.draw(assets.getGroundTexture(HexGroundType.type.WATER), hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
 	 }
 	 
 	 

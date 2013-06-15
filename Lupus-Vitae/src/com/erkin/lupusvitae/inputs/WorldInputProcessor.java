@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.erkin.lupusvitae.model.HexWorld;
 
@@ -42,88 +43,9 @@ public class WorldInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
 		cam.unproject(touchPos.set(screenX, screenY, 0));
-		//http://www.gamedev.net/page/resources/_/technical/game-programming/coordinates-in-hexagon-based-tile-maps-r1800
-	    
-		// Section coor
-		float sectX = (int)Math.floor(touchPos.x  / world.colCalcul);
-	    float sectY = (int)Math.floor(touchPos.y / world.rowCalcul);
-
-	    // Pixel coor in sections
-		float sectPixelX = touchPos.x  % world.colCalcul;
-		float sectPixelY = touchPos.y % world.rowCalcul;
-
-		// Final coor
-		int arrayY = 0;
-		int arrayX = 0;
-
-		// Used to calculate angle
-		float m = world.h / world.r;
-		
-		// Even line : Type A
-		if (sectY % 2 < 1)
-		{
-			Gdx.app.log("Type ", "A");
-
-			 // Middle
-			 arrayY = (int)sectY;
-			 arrayX = (int)sectX;
-			 
-			 // Left
-			 if (sectPixelY < (world.h - sectPixelX * m))
-			 {
-				 arrayY = (int)sectY - 1;
-				 arrayX = (int)sectX - 1; 
-			 }
-			 // Right
-			 else if (sectPixelY < (-world.h + sectPixelX * m))
-			 {
-				 arrayY = (int)sectY - 1;
-				 arrayX = (int)sectX; 
-			 }
-		}
-		// Odd line : Type B
-		else
-		{
-			Gdx.app.log("Type", "B");
-
-			 // Right of intersection
-			 if (sectPixelX >= world.r)
-			 {
-				 // Hex under (y)
-				 if (sectPixelY < (2 * world.h - sectPixelX * m))
-				 {
-					 arrayY = (int)sectY - 1;
-					 arrayX = (int)sectX; 
-				 }
-				 else
-				 {
-					 arrayY = (int)sectY;
-					 arrayX = (int)sectX; 
-				 }
-			 }
-			 // Left of intersection
-			 if (sectPixelX < world.r)
-			 {
-				 // Hex under (y)
-				 if (sectPixelY < sectPixelX * m)
-				 {
-					 arrayY = (int)sectY - 1;
-					 arrayX = (int)sectX; 
-				 }
-				 else
-				 {
-					 arrayY = (int)sectY;
-					 arrayX = (int)sectX - 1; 
-				 }
-			 }
-		}
-
-	 Gdx.app.log("ArrayX =", String.valueOf(arrayX));
-	 Gdx.app.log("ArrayY =", String.valueOf(arrayY));
-
-	return true;
+		touchHex(touchPos);
+		return true;
 	}
 
 	@Override
@@ -208,4 +130,91 @@ public class WorldInputProcessor implements InputProcessor {
 		}
 	}
 
+	
+	/*
+	 * Game functions
+	 */
+	private void touchHex(Vector3 vec)
+	{
+		//http://www.gamedev.net/page/resources/_/technical/game-programming/coordinates-in-hexagon-based-tile-maps-r1800
+	    
+		// Section coor
+		float sectX = (int)Math.floor(vec.x  / world.colCalcul);
+	    float sectY = (int)Math.floor(vec.y / world.rowCalcul);
+
+	    // Pixel coor in sections
+		float sectPixelX = vec.x  % world.colCalcul;
+		float sectPixelY = vec.y % world.rowCalcul;
+
+		// Final coor
+		int arrayY = 0;
+		int arrayX = 0;
+
+		// Used to calculate angle
+		float m = world.h / world.r;
+		
+		// Even line : Type A
+		if (sectY % 2 < 1)
+		{
+			 // Middle
+			 arrayY = (int)sectY;
+			 arrayX = (int)sectX;
+			 
+			 // Left
+			 if (sectPixelY < (world.h - sectPixelX * m))
+			 {
+				 arrayY = (int)sectY - 1;
+				 arrayX = (int)sectX - 1; 
+			 }
+			 // Right
+			 else if (sectPixelY < (-world.h + sectPixelX * m))
+			 {
+				 arrayY = (int)sectY - 1;
+				 arrayX = (int)sectX; 
+			 }
+		}
+		// Odd line : Type B
+		else
+		{
+			 // Right of intersection
+			 if (sectPixelX >= world.r)
+			 {
+				 // Hex under (y)
+				 if (sectPixelY < (2 * world.h - sectPixelX * m))
+				 {
+					 arrayY = (int)sectY - 1;
+					 arrayX = (int)sectX; 
+				 }
+				 else
+				 {
+					 arrayY = (int)sectY;
+					 arrayX = (int)sectX; 
+				 }
+			 }
+			 // Left of intersection
+			 if (sectPixelX < world.r)
+			 {
+				 // Hex under (y)
+				 if (sectPixelY < sectPixelX * m)
+				 {
+					 arrayY = (int)sectY - 1;
+					 arrayX = (int)sectX; 
+				 }
+				 else
+				 {
+					 arrayY = (int)sectY;
+					 arrayX = (int)sectX - 1; 
+				 }
+			 }
+		}
+
+		if ((world.selectedHex != null) && (world.selectedHex.x == arrayX) && (world.selectedHex.y == arrayY))
+		{
+			world.selectedHex = null;
+		}
+		else
+		{
+			world.selectedHex = new Vector2(arrayX, arrayY);
+		}
+	}
 }

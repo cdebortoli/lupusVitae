@@ -3,6 +3,7 @@ package com.erkin.lupusvitae.model;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.erkin.lupusvitae.utils.*;
 
 public class HexWorld {
@@ -56,6 +57,8 @@ public class HexWorld {
 	public float h;
 	public float r;
 	
+	public Vector2 selectedHex;
+	
 	// Init
 	public HexWorld(int worldRows, int worldCols, float hexSide)
 	{
@@ -77,7 +80,13 @@ public class HexWorld {
 		this.r = HexMath.getR(this.side, HexOrientation.POINT);
         this.colCalcul = 2 * this.r;
         this.rowCalcul = this.h + this.side;	
+        
+        selectedHex = null;
 	}
+	
+	/*
+	 * Generation methods
+	 */
 	
 	// Generate ground base
 	public void tempGroundGeneration()

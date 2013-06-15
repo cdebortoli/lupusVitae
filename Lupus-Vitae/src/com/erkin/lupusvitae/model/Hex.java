@@ -37,6 +37,7 @@ public class Hex {
 		this.isLoaded = isLoadedParam;
 	}
 	
+	
 	// Init
 	public Hex(float hexX, float hexY, float side, int rowIndice, int columnIndice, float hexWidth, float hexHeight)
 	{
