@@ -3,12 +3,14 @@ package com.erkin.lupusvitae.model;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.math.Vector2;
+import com.erkin.lupusvitae.WorldGenerator;
 import com.erkin.lupusvitae.utils.*;
 
 public class HexWorld {
 	
 	// Hexes
 	private int[][]	groundHexes;
+	private double[][] heightHexes;
 	private ArrayList<Hex> loadedHexes = new ArrayList<Hex>();
 	//private ArrayList<Hex>	livingHexes;
 	//private ArrayList<Hex>	itemHexes; // Food at ground, etc
@@ -35,6 +37,15 @@ public class HexWorld {
 	public int getGroundHex(int row, int col)
 	{
 		return groundHexes[col][row];
+	}
+
+	public double[][]getHeightHexes()
+	{
+		return heightHexes;
+	}
+	public double getHeightHex(int row, int col)
+	{
+		return heightHexes[col][row];
 	}
 	
 	// Map width
@@ -65,6 +76,7 @@ public class HexWorld {
 		this.rows = worldRows;
 		this.cols = worldCols;
 		groundHexes = new int[cols][rows];
+		heightHexes = new double[cols][rows];
 		// Hexes parameters
 		this.side = hexSide;
 		
@@ -81,6 +93,17 @@ public class HexWorld {
         this.rowCalcul = this.h + this.side;	
         
         selectedHex = null;
+        
+        // World generation
+        WorldGenerator worldGenerator = new WorldGenerator(2000);
+        heightHexes = worldGenerator.generateWorld1(worldRows);
+
+		for(int x = 0; x < heightHexes.length; x++){
+			for(int y = 0; y < heightHexes[0].length; y++){
+				groundHexes[x][y] = HexGroundType.getTypeForHeight(heightHexes[x][y]).ordinal();
+			}
+		}
+		
 	}
 	
 	/*
@@ -103,9 +126,9 @@ public class HexWorld {
 		this.loadedHexes.clear();
 		
 		// New tiles
-		for (int col = minCol; col <= maxCol; col++) {
-			for (int row = minRow; row <= maxRow; row++) {
-				if (row >= 0 && row <= rows && col >= 0 && col <= cols)
+		for (int col = minCol; col < maxCol; col++) {
+			for (int row = minRow; row < maxRow; row++) {
+				if (row >= 0 && row < rows && col >= 0 && col < cols)
 					createLoadedHex(col,row,r,h);
 			}
 		}

@@ -47,7 +47,7 @@ public class WorldGenerator {
 		{
 			for(int y = 0; y < size; y++)
 			{
-				result[x][y] = ridgedMultifractal(WorldGeneratorHelper.normalizeForRidged(x, radius),
+				double resultHeight = ridgedMultifractal(WorldGeneratorHelper.normalizeForRidged(x, radius),
 						WorldGeneratorHelper.normalizeForRidged(y, radius), 
 						this.seed,
 						H, 
@@ -57,6 +57,7 @@ public class WorldGenerator {
 						gain,
 						scaleX,
 						scaleY);
+				result[x][y] = WorldGeneratorHelper.invertHeight(resultHeight,2);
 			}
 		}
 		return result;

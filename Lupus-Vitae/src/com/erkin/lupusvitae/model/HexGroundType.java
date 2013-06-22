@@ -5,11 +5,42 @@ public class HexGroundType {
 	{
 		WATER,
 		GRASS,
-		SAND,
+		SOIL,
 		SNOW,
 		CLIFF,
 		ROCK,
 		BUSH,
 		TREE
+	}
+	
+	public static type getTypeForHeight(double height)
+	{
+		
+		if (height <= 0.2)
+		{
+			return type.SOIL;
+		}
+		
+		if (height <= 0.5)
+		{
+			return type.GRASS;
+		}
+		
+		if (height <= 1)
+		{
+			return type.TREE;
+		}
+		
+		if (height <= 1.2)
+		{
+			return type.GRASS;
+		}
+		
+		if (height <= 1.5)
+		{
+			return type.SOIL;
+		}
+		
+		return type.SNOW;
 	}
 }

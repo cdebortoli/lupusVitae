@@ -111,12 +111,34 @@ public class WorldRenderer {
 	 // Render one hex
 	 public void renderHex(Hex hex)
 	 {
+		 int groundHex = world.getGroundHex(hex.getRowIndice(), hex.getColumnIndice());
+		 double heightHex = world.getHeightHex(hex.getRowIndice(), hex.getColumnIndice());
+		 
+//		 if (heightHex >= 1.25)
+//			 spriteBatch.setColor(0.9f, 0.9f, 1, 0.8f);
+//		 else if (groundHex >= 1.5)
+//			 spriteBatch.setColor(0.8f, 0.8f, 1,  0.6f);
+//		 else if (groundHex >= 1.75)
+//			 spriteBatch.setColor(0.7f, 0.7f, 1,  0.4f);
+//		 else if (groundHex >= 1.80)
+//			 spriteBatch.setColor(0.6f, 0.6f, 1, 0.2f);
+//		 else
+		 if (heightHex > 1.25)
+		 {
+			 float baseValue = (float) (heightHex - 1);
+			 float alphaSub = (float) (0.5*baseValue);
+			 float alpha = 1 - alphaSub; 
+			 spriteBatch.setColor(alpha, alpha, 1, alpha);
+		 }
+		 else
+			 spriteBatch.setColor(1, 1, 1, 1);
+	
 		if ((world.selectedHex != null) && (world.selectedHex.x == hex.getColumnIndice()) && (world.selectedHex.y == hex.getRowIndice()))
 		{
 			spriteBatch.draw(assets.getSelectedHexTexture(), hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
 		}
 		else
-			spriteBatch.draw(assets.getGroundTexture(HexGroundType.type.WATER), hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
+			spriteBatch.draw(assets.getGroundTexture(HexGroundType.type.values()[groundHex]), hex.getPositionX(), hex.getPositionY(), world.hexWidth, world.hexHeight);
 	 }
 	 
 	 

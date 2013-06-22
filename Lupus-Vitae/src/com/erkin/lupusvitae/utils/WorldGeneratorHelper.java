@@ -46,4 +46,9 @@ public class WorldGeneratorHelper {
 	    int scaled = (int) (height * 255);
 	    return scaled;
 	}
+	
+	public static double invertHeight (double height, double maxValue) 
+	{
+		return maxValue - height;
+	}
 }

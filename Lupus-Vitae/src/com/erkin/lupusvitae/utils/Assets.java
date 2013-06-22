@@ -26,7 +26,7 @@ public class Assets {
 	public void load()
 	{
 		waterTexture = atlas.findRegion("hex_water");
-		grassTexture = atlas.findRegion("hew_grass");
+		grassTexture = atlas.findRegion("hex_grass");
 		sandTexture = atlas.findRegion("hex_sand");
 		snowTexture = atlas.findRegion("hex_snow");
 		rockTexture = atlas.findRegion("hex_rock");
@@ -43,7 +43,7 @@ public class Assets {
 			return waterTexture;
 		case GRASS:
 			return grassTexture;
-		case SAND:
+		case SOIL:
 			return sandTexture;
 		case SNOW:
 			return snowTexture;

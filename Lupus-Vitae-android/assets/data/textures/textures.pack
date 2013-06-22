@@ -38,21 +38,21 @@ hex_rock
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_sand
+hex_selected
   rotate: false
   xy: 517, 517
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_selected
+hex_snow
   rotate: false
   xy: 259, 1
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_snow
+hex_soil
   rotate: false
   xy: 517, 259
   size: 256, 256

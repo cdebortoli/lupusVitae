@@ -16,7 +16,7 @@ public class GameScreen extends AbstractScreen {
 				
 		world = new HexWorld(LupusVitaeConstants.WORLD_WIDTH_UNITS, LupusVitaeConstants.WORLD_HEIGHT_UNITS, LupusVitaeConstants.HEX_SIDE_UNIT);
 		worldRenderer = new WorldRenderer(world);
-		world.tempGroundGeneration();
+		//world.tempGroundGeneration();
 	}
     
 
