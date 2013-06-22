@@ -1,4 +1,4 @@
-package come.me.lupusvitae.screens;
+package com.me.lupusvitae.screens;
 
 import com.erkin.lupusvitae.LupusVitaeConstants;
 import com.erkin.lupusvitae.LupusVitaeGame;

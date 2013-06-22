@@ -2,7 +2,6 @@ package com.erkin.lupusvitae.model;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.erkin.lupusvitae.utils.*;
 

@@ -1,7 +1,7 @@
 package com.erkin.lupusvitae;
 
 import com.badlogic.gdx.Game;
-import come.me.lupusvitae.screens.GameScreen;
+import com.me.lupusvitae.screens.GameScreen;
 
 public class LupusVitaeGame extends Game {
     
