@@ -36,9 +36,9 @@ public class WorldGenerator {
 	}
 	
 	
-	public double[][] generateWorld1(double size)
+	public float[][] generateWorld1(double size)
 	{
-		double result[][] = new double[(int)size][(int)size];
+		float result[][] = new float[(int)size][(int)size];
 		first = true;
 
 		int radius = WorldGeneratorHelper.getRadiusForSize(size);
@@ -57,7 +57,7 @@ public class WorldGenerator {
 						gain,
 						scaleX,
 						scaleY);
-				result[x][y] = WorldGeneratorHelper.invertHeight(resultHeight,2);
+				result[x][y] = (float)WorldGeneratorHelper.invertHeight(resultHeight,2);
 			}
 		}
 		return result;
@@ -135,7 +135,7 @@ public class WorldGenerator {
 	public static void main(String[] args) {
 		WorldGenerator test = new WorldGenerator(550);
 		double size = 1024;
-		double[][] worldResult = test.generateWorld1(size);
+		float[][] worldResult = test.generateWorld1(size);
 		
 		BufferedImage img = new BufferedImage((int)size, (int)size, BufferedImage.TYPE_INT_ARGB);
 

@@ -13,7 +13,7 @@ public class HexGroundType {
 		TREE
 	}
 	
-	public static type getTypeForHeight(double height)
+	public static type getTypeForHeight(float height)
 	{
 		
 		if (height <= 0.2)

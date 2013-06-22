@@ -27,7 +27,7 @@ public class Assets {
 	{
 		waterTexture = atlas.findRegion("hex_water");
 		grassTexture = atlas.findRegion("hex_grass");
-		sandTexture = atlas.findRegion("hex_sand");
+		sandTexture = atlas.findRegion("hex_soil");
 		snowTexture = atlas.findRegion("hex_snow");
 		rockTexture = atlas.findRegion("hex_rock");
 		cliffTexture = atlas.findRegion("hex_cliff");

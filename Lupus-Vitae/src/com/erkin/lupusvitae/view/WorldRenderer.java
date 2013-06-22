@@ -2,19 +2,14 @@ package com.erkin.lupusvitae.view;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.erkin.lupusvitae.inputs.WorldInputProcessor;
 import com.erkin.lupusvitae.model.Hex;
 import com.erkin.lupusvitae.model.HexGroundType;
 import com.erkin.lupusvitae.model.HexWorld;
 import com.erkin.lupusvitae.utils.Assets;
-import com.erkin.lupusvitae.utils.HexMath;
-import com.erkin.lupusvitae.utils.HexOrientation;
 
 public class WorldRenderer {
 
@@ -112,17 +107,8 @@ public class WorldRenderer {
 	 public void renderHex(Hex hex)
 	 {
 		 int groundHex = world.getGroundHex(hex.getRowIndice(), hex.getColumnIndice());
-		 double heightHex = world.getHeightHex(hex.getRowIndice(), hex.getColumnIndice());
+		 float heightHex = world.getHeightHex(hex.getRowIndice(), hex.getColumnIndice());
 		 
-//		 if (heightHex >= 1.25)
-//			 spriteBatch.setColor(0.9f, 0.9f, 1, 0.8f);
-//		 else if (groundHex >= 1.5)
-//			 spriteBatch.setColor(0.8f, 0.8f, 1,  0.6f);
-//		 else if (groundHex >= 1.75)
-//			 spriteBatch.setColor(0.7f, 0.7f, 1,  0.4f);
-//		 else if (groundHex >= 1.80)
-//			 spriteBatch.setColor(0.6f, 0.6f, 1, 0.2f);
-//		 else
 		 if (heightHex > 1.25)
 		 {
 			 float baseValue = (float) (heightHex - 1);

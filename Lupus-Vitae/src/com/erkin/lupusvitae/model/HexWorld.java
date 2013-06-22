@@ -10,7 +10,7 @@ public class HexWorld {
 	
 	// Hexes
 	private int[][]	groundHexes;
-	private double[][] heightHexes;
+	private float[][] heightHexes;
 	private ArrayList<Hex> loadedHexes = new ArrayList<Hex>();
 	//private ArrayList<Hex>	livingHexes;
 	//private ArrayList<Hex>	itemHexes; // Food at ground, etc
@@ -39,11 +39,11 @@ public class HexWorld {
 		return groundHexes[col][row];
 	}
 
-	public double[][]getHeightHexes()
+	public float[][]getHeightHexes()
 	{
 		return heightHexes;
 	}
-	public double getHeightHex(int row, int col)
+	public float getHeightHex(int row, int col)
 	{
 		return heightHexes[col][row];
 	}
@@ -76,7 +76,7 @@ public class HexWorld {
 		this.rows = worldRows;
 		this.cols = worldCols;
 		groundHexes = new int[cols][rows];
-		heightHexes = new double[cols][rows];
+		heightHexes = new float[cols][rows];
 		// Hexes parameters
 		this.side = hexSide;
 		
