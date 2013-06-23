@@ -12,6 +12,7 @@ public class Assets {
 	public TextureRegion sandTexture;
 	public TextureRegion snowTexture;
 	public TextureRegion rockTexture;
+	public TextureRegion rockyTexture;
 	public TextureRegion cliffTexture;
 	public TextureRegion bushTexture;
 	public TextureRegion treeTexture;
@@ -30,6 +31,7 @@ public class Assets {
 		sandTexture = atlas.findRegion("hex_soil");
 		snowTexture = atlas.findRegion("hex_snow");
 		rockTexture = atlas.findRegion("hex_rock");
+		rockyTexture = atlas.findRegion("hex_rocky");
 		cliffTexture = atlas.findRegion("hex_cliff");
 		bushTexture = atlas.findRegion("hex_bush");
 		treeTexture = atlas.findRegion("hex_tree");
@@ -49,6 +51,8 @@ public class Assets {
 			return snowTexture;
 		case ROCK:
 			return rockTexture;
+		case ROCKY:
+			return rockyTexture;
 		case CLIFF:
 			return cliffTexture;
 		case BUSH:
@@ -58,7 +62,7 @@ public class Assets {
 		default:
 			break;
 		}
-		return bushTexture;
+		return grassTexture;
 	}
 	
 	public TextureRegion getSelectedHexTexture()

@@ -10,6 +10,7 @@ import com.erkin.lupusvitae.utils.ImprovedNoise;
 import com.erkin.lupusvitae.utils.WorldGeneratorHelper;
 
 // 1 : Generate ground
+// Ok we have altitude, but the type of terrain don't need to be independent of the altitude to have rocky mountains and montains with trees.
 // 2 : Generate rivers. Blend with conditions of ground (see clamp method)
 // 3 : Realtime generation for food. At each turn. How ?
 public class WorldGenerator {

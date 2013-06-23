@@ -7,6 +7,7 @@ public class HexGroundType {
 		GRASS,
 		SOIL,
 		SNOW,
+		ROCKY,
 		CLIFF,
 		ROCK,
 		BUSH,
@@ -25,19 +26,19 @@ public class HexGroundType {
 			return type.GRASS;
 		}
 		
-		if (height <= 1)
+		if (height <= 0.8)
 		{
 			return type.TREE;
 		}
 		
-		if (height <= 1.2)
+		if (height <= 1.1)
 		{
 			return type.GRASS;
 		}
 		
-		if (height <= 1.5)
+		if (height <= 1.3)
 		{
-			return type.SOIL;
+			return type.ROCKY;
 		}
 		
 		return type.SNOW;

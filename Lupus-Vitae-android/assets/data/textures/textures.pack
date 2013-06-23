@@ -38,28 +38,28 @@ hex_rock
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_selected
+hex_rocky
   rotate: false
   xy: 517, 517
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_snow
+hex_selected
   rotate: false
   xy: 259, 1
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_soil
+hex_snow
   rotate: false
   xy: 517, 259
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
-hex_tree
+hex_soil
   rotate: false
   xy: 517, 1
   size: 256, 256
@@ -71,9 +71,16 @@ textures2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-hex_water
+hex_tree
   rotate: false
   xy: 1, 1
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+hex_water
+  rotate: false
+  xy: 259, 1
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
