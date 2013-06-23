@@ -112,9 +112,9 @@ public class WorldRenderer {
 		 if (heightHex > 1.25)
 		 {
 			 float baseValue = (float) (heightHex - 1);
-			 float alphaSub = (float) (0.5*baseValue);
+			 float alphaSub = (float) (0.5 * baseValue);
 			 float alpha = 1 - alphaSub; 
-			 spriteBatch.setColor(alpha, alpha, 1, alpha);
+			 spriteBatch.setColor(alpha, alpha, alpha, alpha);
 		 }
 		 else
 			 spriteBatch.setColor(1, 1, 1, 1);

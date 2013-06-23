@@ -97,10 +97,20 @@ public class HexWorld {
         // World generation
         WorldGenerator worldGenerator = new WorldGenerator(2000);
         heightHexes = worldGenerator.generateWorld1(worldRows);
-
+        float rocks[][] = worldGenerator.generateSceneries(worldRows,1.1,0.5);
+        float trees[][] = worldGenerator.generateSceneries(worldRows,1.1,1);
+        
 		for(int x = 0; x < heightHexes.length; x++){
 			for(int y = 0; y < heightHexes[0].length; y++){
 				groundHexes[x][y] = HexGroundType.getTypeForHeight(heightHexes[x][y]).ordinal();
+				
+				HexGroundType.type rock = HexGroundType.getScenery(HexGroundType.type.ROCK, rocks[x][y], 0.100F, 0.102F);
+				if (rock != null)
+					groundHexes[x][y] = rock.ordinal();
+				
+				HexGroundType.type tree = HexGroundType.getScenery(HexGroundType.type.TREE, trees[x][y], 0.100F, 0.102F);
+				if (tree != null)
+					groundHexes[x][y] = tree.ordinal();
 			}
 		}
 		

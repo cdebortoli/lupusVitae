@@ -15,7 +15,6 @@ public class HexGroundType {
 	
 	public static type getTypeForHeight(float height)
 	{
-		
 		if (height <= 0.2)
 		{
 			return type.SOIL;
@@ -42,5 +41,13 @@ public class HexGroundType {
 		}
 		
 		return type.SNOW;
+	}
+	
+	public static type getScenery(type hexType, float height, float min, float max)
+	{
+		if (height > min && height < max)
+			return hexType;
+		return null;
+		
 	}
 }

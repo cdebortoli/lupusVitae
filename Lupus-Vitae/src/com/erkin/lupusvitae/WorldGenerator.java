@@ -1,11 +1,17 @@
 package com.erkin.lupusvitae;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
+
 import com.erkin.lupusvitae.utils.ImprovedNoise;
 import com.erkin.lupusvitae.utils.WorldGeneratorHelper;
 
+// 1 : Generate ground
+// 2 : Generate rivers. Blend with conditions of ground (see clamp method)
+// 3 : Realtime generation for food. At each turn. How ?
 public class WorldGenerator {
 	
 	private double seed;
@@ -21,13 +27,13 @@ public class WorldGenerator {
 	 * “octaves” is the number of frequencies in the fBm
 	 * “offset” raises the terrain from “sea level”
 	 */
-	private double H = 1;
+	private double H = 1.25;
 	private double lacunarity = 2; 
-	private double octaves = 16;
+	private double octaves = 8;
 	private double offset = 1;
 	private double gain = 3;
-	private double scaleX = 2;
-	private double scaleY = 2;
+	private double scaleX = 3;
+	private double scaleY = 3;
 
 	
 	public WorldGenerator(double seedParam)
@@ -49,7 +55,7 @@ public class WorldGenerator {
 			{
 				double resultHeight = ridgedMultifractal(WorldGeneratorHelper.normalizeForRidged(x, radius),
 						WorldGeneratorHelper.normalizeForRidged(y, radius), 
-						this.seed,
+						seed,
 						H, 
 						lacunarity,
 						octaves,
@@ -62,7 +68,22 @@ public class WorldGenerator {
 		}
 		return result;
 	}
-			
+	
+	public float[][] generateSceneries(double size, double freq, double seedCoef)
+	{
+		float sceneries[][] = new float[(int) size][(int) size];
+		for(int x = 0; x < size; x++)
+		{
+			for(int y = 0; y < size; y++)
+			{
+				//double height = ImprovedNoise.noise(x*freq,y*freq,0) + 0.5 * ImprovedNoise.noise(x*freq,y*freq,0) + 0.25 * ImprovedNoise.noise(x*freq,y*freq,0);
+				double height = ImprovedNoise.noise(x*freq, y*freq, seed*seedCoef);
+				sceneries[x][y] = (float)height;
+				//System.out.println(String.valueOf(height));
+			}
+		}
+		return sceneries;
+	}
 		
 /* -------------------------------------
  * Private
@@ -133,7 +154,7 @@ public class WorldGenerator {
 	 */
 	
 	public static void main(String[] args) {
-		WorldGenerator test = new WorldGenerator(550);
+		WorldGenerator test = new WorldGenerator(2000	);
 		double size = 1024;
 		float[][] worldResult = test.generateWorld1(size);
 		
@@ -220,9 +241,11 @@ public class WorldGenerator {
 					B = 255;
 					R = 20;
 				}
+				int rgb =  Color.HSBtoRGB(0.0f,0.0f,(float) height);
 				
+				img.setRGB(x, y, rgb);
 				//double height = worldResult[x][y];
-				img.setRGB(x, y, WorldGeneratorHelper.RGB(R, G, B));
+				//img.setRGB(x, y, WorldGeneratorHelper.RGB(R, G, B));
 				//System.out.println(String.valueOf(x)+"-"+String.valueOf(y)+"="+String.valueOf(height));
 			}
 		}

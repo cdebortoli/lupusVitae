@@ -14,7 +14,7 @@ public class WorldGeneratorHelper {
 		return result;
 	}
 	
-	// Normalize -1/1
+	// Normalize 0/2
 	public static int getRadiusForSize(double size)
 	{
 		return (int) (size/2);
