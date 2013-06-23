@@ -21,19 +21,13 @@ public class HexGroundType {
 			return type.SOIL;
 		}
 		
-		if (height <= 0.5)
+		if (height <= 0.9)
 		{
 			return type.GRASS;
 		}
-		
-		if (height <= 0.8)
-		{
-			return type.TREE;
-		}
-		
 		if (height <= 1.1)
 		{
-			return type.GRASS;
+			return type.TREE;
 		}
 		
 		if (height <= 1.3)

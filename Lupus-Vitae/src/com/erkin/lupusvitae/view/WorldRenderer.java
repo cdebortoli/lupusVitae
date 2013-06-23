@@ -109,15 +109,12 @@ public class WorldRenderer {
 		 int groundHex = world.getGroundHex(hex.getRowIndice(), hex.getColumnIndice());
 		 float heightHex = world.getHeightHex(hex.getRowIndice(), hex.getColumnIndice());
 		 
-		 if (heightHex > 1.0)
-		 {
-			 float baseValue = (float) (heightHex - 0.75);
-			 float alphaSub = (float) (0.5 * baseValue);
-			 float alpha = 1 - alphaSub; 
-			 spriteBatch.setColor(alpha, alpha, alpha, 1);
-		 }
-		 else
-			 spriteBatch.setColor(1, 1, 1, 1);
+
+
+		 spriteBatch.setColor(1, 1, 1, 1);
+		 float alphaSub = (float) ((2 - heightHex));
+		 float alpha = 1 - alphaSub; 
+		 spriteBatch.setColor(alphaSub/2, alphaSub/2, alphaSub/2, 1);
 	
 		if ((world.selectedHex != null) && (world.selectedHex.x == hex.getColumnIndice()) && (world.selectedHex.y == hex.getRowIndice()))
 		{

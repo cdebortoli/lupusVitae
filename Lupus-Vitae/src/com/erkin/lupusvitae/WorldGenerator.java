@@ -10,7 +10,7 @@ import com.erkin.lupusvitae.utils.ImprovedNoise;
 import com.erkin.lupusvitae.utils.WorldGeneratorHelper;
 
 // 1 : Generate ground
-// Ok we have altitude, but the type of terrain don't need to be independent of the altitude to have rocky mountains and montains with trees.
+// Ok we have altitude, but the type of terrain don't need to be independent of the altitude to have rocky mountains and montains with trees. = NO http://simblob.blogspot.fr/2010/01/simple-map-generation.html
 // 2 : Generate rivers. Blend with conditions of ground (see clamp method)
 // 3 : Realtime generation for food. At each turn. How ?
 public class WorldGenerator {
@@ -85,6 +85,37 @@ public class WorldGenerator {
 		}
 		return sceneries;
 	}
+	
+	public float[][] generateRivers(double size, double seed)
+	{
+		int radius = WorldGeneratorHelper.getRadiusForSize(size);
+		first = true;
+
+		float rivers[][] = new float[(int) size][(int) size];
+
+		for(int x = 0; x < size; x++)
+		{
+			for(int y = 0; y < size; y++)
+			{
+
+//				double resultHeight = multifractal(WorldGeneratorHelper.normalizeForRidged(x, radius),
+//						WorldGeneratorHelper.normalizeForRidged(y, radius),
+//						seed*0.99,
+//						0, 
+//						2,
+//						3,
+//						1,
+//						1.5,
+//						1.5);
+				double resultHeight =  fBm(WorldGeneratorHelper.normalizeForRidged(x, radius), WorldGeneratorHelper.normalizeForRidged(y, radius),
+						seed*0.99, 1, 2, 6, 4.5, 4.5);
+		
+				rivers[x][y] = WorldGeneratorHelper.step(0.5f,(float)resultHeight);
+				//System.out.println(String.valueOf(resultHeight));
+			}
+		}
+		return rivers;
+	}
 		
 /* -------------------------------------
  * Private
@@ -148,6 +179,34 @@ public class WorldGenerator {
 		return( result );
 	} /* RidgedMultifractal() */
 		
+	/*
+	* Procedural fBm evaluated at “point”.
+	*
+	* Parameters:
+	* “H” is the fractal increment parameter
+	* “lacunarity” is the gap between successive frequencies
+	* “octaves” is the number of frequencies in the fBm
+	*/
+	double fBm(double x, double y, double zSeed, double H, double lacunarity, double octaves, double xScale, double yScale )
+	{
+		x *= xScale;
+		y *= yScale;
+		double value, remainder;
+		int i;
+		value = 0.0;
+		
+		/* inner loop of fractal construction */
+		for (i=0; i<octaves; i++){
+			value += ImprovedNoise.noise(x,y,zSeed) * Math.pow( lacunarity, -H*i );
+			x *= lacunarity;
+			y *= lacunarity;
+		}
+		remainder = octaves - (int)octaves;
+		if ( remainder > 0 ) /* add in “octaves” remainder */
+		/* ‘i’ and spatial freq. are preset in loop above */
+		value += remainder * ImprovedNoise.noise(x,y,zSeed) * Math.pow( lacunarity, -H*i );
+		return value;
+	}
 	
 	
 	/*
@@ -157,7 +216,7 @@ public class WorldGenerator {
 	public static void main(String[] args) {
 		WorldGenerator test = new WorldGenerator(2000	);
 		double size = 1024;
-		float[][] worldResult = test.generateWorld1(size);
+		float[][] worldResult = test.generateRivers(size,200);
 		
 		BufferedImage img = new BufferedImage((int)size, (int)size, BufferedImage.TYPE_INT_ARGB);
 

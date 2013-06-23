@@ -1,6 +1,11 @@
 package com.erkin.lupusvitae.model;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import com.badlogic.gdx.math.Vector2;
 import com.erkin.lupusvitae.WorldGenerator;
@@ -97,38 +102,55 @@ public class HexWorld {
         // World generation
         WorldGenerator worldGenerator = new WorldGenerator(2000);
         heightHexes = worldGenerator.generateWorld1(worldRows);
+        float rivers[][] = worldGenerator.generateRivers(worldRows, 2000*5);
         float rocks[][] = worldGenerator.generateSceneries(worldRows,1.1,0.5);
         float trees[][] = worldGenerator.generateSceneries(worldRows,1.1,1);
         
 		for(int x = 0; x < heightHexes.length; x++){
 			for(int y = 0; y < heightHexes[0].length; y++){
+				
+				/*
+				 *  Ground
+				 */
 				groundHexes[x][y] = HexGroundType.getTypeForHeight(heightHexes[x][y]).ordinal();
 				
-				HexGroundType.type rock = HexGroundType.getScenery(HexGroundType.type.ROCK, rocks[x][y], 0.100F, 0.102F);
+				/*
+				 * Sceneries
+				 */
+				// Rocks
+				float rockRangeMin = 0.100F;
+				float rockRangeMax = 0.102F;
+				HexGroundType.type rock = HexGroundType.getScenery(HexGroundType.type.ROCK, rocks[x][y], rockRangeMin, rockRangeMax);
 				if (rock != null)
 					groundHexes[x][y] = rock.ordinal();
 				
-				HexGroundType.type tree = HexGroundType.getScenery(HexGroundType.type.TREE, trees[x][y], 0.100F, 0.102F);
+				// Trees
+				float treeRangeMin = 0.100F;
+				float treeRangeMax = 0.102F;
+				if (groundHexes[x][y] == HexGroundType.type.ROCKY.ordinal())
+				{
+					treeRangeMax = 0.12F;
+				}
+				HexGroundType.type tree = HexGroundType.getScenery(HexGroundType.type.TREE, trees[x][y], treeRangeMin, treeRangeMax);
 				if (tree != null)
 					groundHexes[x][y] = tree.ordinal();
+				
+				
+				/*
+				 * Rivers
+				 */
+				if (rivers[x][y] == 1)
+					groundHexes[x][y] = HexGroundType.type.WATER.ordinal();
 			}
 		}
+		// Debug
+		createWorldBitmap();
 		
 	}
 	
 	/*
 	 * Generation methods
 	 */
-	
-	// Generate ground base
-	public void tempGroundGeneration()
-	{
-		for (int row = 0; row < rows; row++) {
-			for (int col = 0; col < cols; col++) {
-				groundHexes[col][row] = HexGroundType.type.WATER.ordinal();
-			}
-		}
-	}
 	
 	// Generate loaded hex
 	public void generateLoadHexes(int minCol, int maxCol, int minRow, int maxRow)
@@ -162,4 +184,62 @@ public class HexWorld {
 		this.loadedHexes.add(newHex);
 	}
 
+	
+	private void createWorldBitmap()
+	{
+		BufferedImage img = new BufferedImage((int)this.rows, (int)this.cols, BufferedImage.TYPE_INT_ARGB);
+        
+		for(int x = 0; x < groundHexes.length; x++){
+		
+			for(int y = 0; y < groundHexes[0].length; y++){
+				int R = 0;
+				int G = 0;
+				int B = 0;
+				if (groundHexes[x][y]== HexGroundType.type.WATER.ordinal())
+				{
+					R = 0;
+					G = 0;
+					B = 255;
+				}
+				else if (groundHexes[x][y]== HexGroundType.type.GRASS.ordinal())
+				{
+					R = 113;
+					G = 255;
+					B = 12;
+				}
+				else if (groundHexes[x][y]== HexGroundType.type.ROCKY.ordinal())
+				{
+					R = 128;
+					G = 128;
+					B = 128;
+				}
+				else if (groundHexes[x][y]== HexGroundType.type.SNOW.ordinal())
+				{
+					R = 255;
+					G = 255;
+					B = 255;
+				}
+				else if (groundHexes[x][y]== HexGroundType.type.TREE.ordinal())
+				{
+					R = 0;
+					G = 114;
+					B = 19;
+				}
+				else if (groundHexes[x][y]== HexGroundType.type.SOIL.ordinal())
+				{
+					R = 188;
+					G = 138;
+					B = 81;
+				}
+				img.setRGB(x, y, WorldGeneratorHelper.RGB(R, G, B));
+			}
+		}
+		
+		File outputFile = new File("debug/map.png");
+		try {
+			ImageIO.write(img, "PNG", outputFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

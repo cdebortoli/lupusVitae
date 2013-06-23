@@ -51,4 +51,11 @@ public class WorldGeneratorHelper {
 	{
 		return maxValue - height;
 	}
+	
+	public static float step(float a, float x)
+	{
+		if (x >= a)
+			return 1;
+		return 0;
+	}
 }
